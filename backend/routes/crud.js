@@ -16,3 +16,5 @@ router.put('/update', (req, res, next) => {
 router.delete('/delete/:id', (req, res, next) => {
     res.status(200).json({ message: 'Delete request is working!' });
 });
+
+module.exports = router;
