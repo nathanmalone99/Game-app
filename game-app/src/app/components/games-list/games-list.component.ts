@@ -8,18 +8,13 @@ import { GamesService } from 'src/app/services/games.service';
 })
 export class GamesListComponent {
 
-  public games: any = [{
-    title: '',
-    description: '',
-    pgRating: '',
-    price: ''
-  }];
+  public games: any = [];
 
   constructor(private _gamesService: GamesService) {}
 
   ngOnInit(): void {
     this._gamesService.getGames().subscribe(games => {
-      console.log('list of games', games);
+      this.games = games;
     })
   }
 }
