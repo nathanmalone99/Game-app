@@ -1,34 +1,19 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const app = express();
 const port = 3000;
+const gameRouter = require('./routes/games');
+require('./db/mongoose');
 
-const appRoutes = require('./routes/crud');
+const app = express();
 
-mongoose.connect('mongodb://localhost:27017/osd')
-  .then(() => {
-    console.log('Connected to Database')
-  })
-  .catch(() => {
-    console.log('Connection Failed')
-  });
+app.use(express.json());
 
-app.get('/', (req, res) => res.send('Hello World from Nathan!'));
+app.use(gameRouter);
 
-
-app.listen(port, function check(error)
-{
-  if(error)
-    {
-      console.log("Connection failed")
-    }
-    else
-    {
-      console.log("Connected to database")
-    }
+app.listen(port, () => {
+  console.log('app is running on port 3000!')
 });
 
-app.use('/games', appRoutes);
+//app.use('/games', appRoutes);
 
 module.exports = app;
 
