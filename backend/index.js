@@ -1,7 +1,10 @@
 const express = require('express');
 const port = 3000;
 const gameRouter = require('./routes/games');
+const multer = require('multer');
+const gameSchema = require('./models/games')
 require('./db/mongoose');
+
 
 const app = express();
 
@@ -15,6 +18,7 @@ app.all('/*', (req, res, next) => {
 });
 
 app.use(gameRouter);
+
 
 app.listen(port, () => {
   console.log('app is running on port 3000!')

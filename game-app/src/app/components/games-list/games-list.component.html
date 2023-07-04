@@ -1,6 +1,7 @@
 <h1>List of Games</h1>
 <div *ngFor="let game of games">
     <h2>{{game.title}}</h2>
+    <img src="{{ game.imageUrl }}" class="img-responsive">
     <div>{{game.description}}</div>
     <div>{{game.pgRating}}</div>
     <div>{{game.price}}</div>
