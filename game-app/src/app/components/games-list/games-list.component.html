@@ -1,8 +1,24 @@
-<h1>List of Games</h1>
-<div *ngFor="let game of games">
-    <h2>{{game.title}}</h2>
-    <img src="{{ game.imageUrl }}" class="img-responsive">
-    <div>{{game.description}}</div>
-    <div>{{game.pgRating}}</div>
-    <div>{{game.price}}</div>
+<div class="main content">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div *ngFor="let game of games" class="col-md-3">
+
+                    <div class="product-box">
+                     
+                        
+                            <img src="{{ game.imageUrl }}" class="img-responsive" (click)="selectGame(game._id)">
+                        
+                            <h2>{{game.title}}</h2>
+                        
+                        <div class="price">{{game.price | currency: 'EUR'}}</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+   
+

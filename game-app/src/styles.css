@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+.product-box {
+    padding-top: 12px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.product-box img {
+    height: 300px;
+    width: 250px;
+    
+}
