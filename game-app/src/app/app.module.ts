@@ -11,6 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GameDetailsComponent } from './components/game-details/game-details.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CartComponent } from './components/cart/cart.component';
+import { CartStatusComponent } from './components/cart-status/cart-status.component';
+
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { CartComponent } from './components/cart/cart.component';
     GamesListComponent,
     NavbarComponent,
     GameDetailsComponent,
-    CartComponent
+    CartComponent,
+    CartStatusComponent
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@
                             <h2>{{game.title}}</h2>
                         
                         <div class="price">{{game.price | currency: 'EUR'}}</div>
+                        <button (click)="addToCart(game)" class="btn btn-primary btn-sm">Add to cart</button>
                     </div>
                     
                 </div>
