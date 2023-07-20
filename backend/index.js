@@ -1,8 +1,7 @@
 const express = require('express');
 const port = 3000;
 const gameRouter = require('./routes/games');
-const multer = require('multer');
-const gameSchema = require('./models/games')
+const userRouter = require('./routes/user')
 require('./db/mongoose');
 
 
@@ -18,6 +17,7 @@ app.all('/*', (req, res, next) => {
 });
 
 app.use(gameRouter);
+app.use(userRouter);
 
 
 app.listen(port, () => {

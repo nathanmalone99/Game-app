@@ -12,6 +12,7 @@ import { GameDetailsComponent } from './components/game-details/game-details.com
 import { AppRoutingModule } from './app-routing.module';
 import { CartComponent } from './components/cart/cart.component';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CartStatusComponent } from './components/cart-status/cart-status.compon
     NavbarComponent,
     GameDetailsComponent,
     CartComponent,
-    CartStatusComponent
+    CartStatusComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,
