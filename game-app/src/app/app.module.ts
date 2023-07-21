@@ -4,6 +4,15 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { RouterModule } from '@angular/router';
 
+import {MatInputModule} from '@angular/material/input';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
+
 import { AppComponent } from './app.component';
 import { GamesListComponent } from './components/games-list/games-list.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -13,6 +22,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { CartComponent } from './components/cart/cart.component';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { SignupComponent } from './components/auth/signup/signup.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AdminDashboardComponent } from './components/auth/admin-dashboard/admin-dashboard.component';
 
 
 @NgModule({
@@ -23,11 +36,24 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
     GameDetailsComponent,
     CartComponent,
     CartStatusComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    SignupComponent,
+    LoginComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatCardModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatExpansionModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule

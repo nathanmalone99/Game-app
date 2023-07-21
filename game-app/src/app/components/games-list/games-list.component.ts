@@ -36,7 +36,7 @@ export class GamesListComponent {
   addToCart(theGame: Game) {
     console.log(`Adding to cart: ${theGame.title}, ${theGame.price}`);
 
-    //TODO ... do the real work
+    
     const theCartItem = new CartItem(theGame);
 
     this.cartService.addToCart(theCartItem);

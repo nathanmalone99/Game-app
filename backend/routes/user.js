@@ -2,9 +2,19 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const User = require("../models/user");
+const User = require("../models/users");
 
 const router = express.Router();
+
+router.get('/api/users', async (req, res) => {
+  try {
+      const user = await User.find({});
+      res.status(200).send(user);
+  }
+  catch(error) {
+      res.status(500).send(error);
+  }
+});
 
 router.post("/api/signup", (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
