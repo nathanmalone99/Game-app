@@ -24,7 +24,7 @@ app.listen(port, () => {
   console.log('app is running on port 3000!')
 });
 
-//app.use('/games', appRoutes);
+
 
 module.exports = app;
 
