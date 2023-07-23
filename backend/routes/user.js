@@ -2,13 +2,13 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const User = require("../models/users");
+const userSchema = require("../models/users");
 
 const router = express.Router();
 
 router.get('/api/users', async (req, res) => {
   try {
-      const user = await User.find({});
+      const user = await userSchema.find({});
       res.status(200).send(user);
   }
   catch(error) {
@@ -19,7 +19,7 @@ router.get('/api/users', async (req, res) => {
 router.post("/api/signup", (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
   .then(hash => {
-    const user = new User({
+    const user = new userSchema({
       email: req.body.email,
       password: hash
     });
@@ -40,7 +40,7 @@ router.post("/api/signup", (req, res, next) => {
 
 router.post("/api/login", (req, res, next) => {
   let fetchedUser;
-  User.findOne({ email: req.body.email })
+  userSchema.findOne({ email: req.body.email })
   .then(user => {
       if (!user) {
         return res.status(401).json({
@@ -70,6 +70,13 @@ router.post("/api/login", (req, res, next) => {
     return res.status(401).json({
       message: "Auth failed"
     });
+  });
+});
+
+router.delete("/api/users/delete/:id", (req, res, next) => {
+  userSchema.deleteOne({_id: req.params.id}).then(result => {
+    console.log(result);
+    res.status(200).json({message: 'User Deleted'})
   });
 });
 
