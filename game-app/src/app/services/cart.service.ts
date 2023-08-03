@@ -16,6 +16,7 @@ export class CartService {
   // storage: Storage = sessionStorage;
   storage: Storage = localStorage;
 
+
   constructor() {
 
     // read data from storage
@@ -28,6 +29,8 @@ export class CartService {
       this.computeCartTotals();
     }
    }
+
+  
 
   addToCart(theCartItem: CartItem) {
 
