@@ -3,7 +3,6 @@ import { GameDetailsComponent } from "./components/game-details/game-details.com
 import { NgModule } from "@angular/core";
 import { GamesListComponent } from "./components/games-list/games-list.component";
 import { CartComponent } from "./components/cart/cart.component";
-import { CheckoutComponent } from "./components/checkout/checkout.component";
 import { LoginComponent } from "./components/auth/login/login.component";
 import { SignupComponent } from "./components/auth/signup/signup.component";
 import { AdminDashboardComponent } from "./components/auth/admin-dashboard/admin-dashboard.component";
