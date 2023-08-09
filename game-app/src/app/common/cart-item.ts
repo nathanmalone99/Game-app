@@ -1,5 +1,9 @@
 import { Game } from "./game";
 
+export class Cart  {
+   items!: Array<CartItem>
+}
+
 export class CartItem {
    
     quantity: number;

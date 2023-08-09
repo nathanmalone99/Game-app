@@ -21,7 +21,6 @@ import { GameDetailsComponent } from './components/game-details/game-details.com
 import { AppRoutingModule } from './app-routing.module';
 import { CartComponent } from './components/cart/cart.component';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
-import { CheckoutComponent } from './components/checkout/checkout.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -36,7 +35,6 @@ import { AdminDashboardComponent } from './components/auth/admin-dashboard/admin
     GameDetailsComponent,
     CartComponent,
     CartStatusComponent,
-    CheckoutComponent,
     SignupComponent,
     LoginComponent,
     AdminDashboardComponent
