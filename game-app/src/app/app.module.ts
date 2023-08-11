@@ -25,6 +25,8 @@ import { SignupComponent } from './components/auth/signup/signup.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminDashboardComponent } from './components/auth/admin-dashboard/admin-dashboard.component';
+import { SuccessComponent } from './components/success/success.component';
+import { CancelComponent } from './components/cancel/cancel.component';
 
 
 @NgModule({
@@ -37,7 +39,9 @@ import { AdminDashboardComponent } from './components/auth/admin-dashboard/admin
     CartStatusComponent,
     SignupComponent,
     LoginComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    SuccessComponent,
+    CancelComponent
   ],
   imports: [
     BrowserModule,

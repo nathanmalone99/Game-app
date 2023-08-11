@@ -3,6 +3,9 @@ import { Component } from '@angular/core';
 import { loadStripe } from '@stripe/stripe-js';
 import { Cart, CartItem } from 'src/app/common/cart-item';
 import { CartService } from 'src/app/services/cart.service';
+import { ChangeDetectorRef } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+
 
 @Component({
   selector: 'app-cart',
@@ -11,14 +14,19 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class CartComponent {
 
-  cart: Cart = { items: [] };
+  private stripePromise = loadStripe('pk_test_51N7gd7IB2R5TmgiivsbQfGz3Xix7juEdTtoQyzViy3smc2wQGR3RilkZoQgsFbsaaX2EZk5HKC2OZbntbslHQTKn00g0xqAmSM');
+  cart!: Cart;
 
   cartItems: CartItem[] = [];
   totalPrice: number = 0;
   totalQuantity: number = 0;
 
   constructor(private cartService: CartService, 
-              private _httpClient: HttpClient) { }
+              private _httpClient: HttpClient,
+              private changeDetector: ChangeDetectorRef
+              ) { 
+                this.cart = new Cart();
+              }
 
   ngOnInit(): void {
     this.listCartDetails();
@@ -54,15 +62,38 @@ export class CartComponent {
     this.cartService.remove(theCartItem);
   }
 
-  onCheckout(): void {
-    this._httpClient.post('http://localhost:3000/api/checkout', {
-      items: this.cart.items,
-    }).subscribe(async (res: any) => { 
-      let stripe = await loadStripe('pk_test_51N7gd7IB2R5TmgiivsbQfGz3Xix7juEdTtoQyzViy3smc2wQGR3RilkZoQgsFbsaaX2EZk5HKC2OZbntbslHQTKn00g0xqAmSM');
-      stripe?.redirectToCheckout({
-        sessionId: res.id,
-      });
-    });
+  async checkout() {
+    try {
+      const payload = {
+        items: this.cartItems
+    };
+  
+      console.log(this.cart); 
+      
+      const session$ = this._httpClient.post<{ sessionId: string }>('http://localhost:3000/api/checkout', payload);
+      const { sessionId } = await firstValueFrom(session$);
+  
+  
+      const stripe = await this.stripePromise;
+      const { error } = await stripe!.redirectToCheckout({ sessionId });
+  
+      if (error) {
+        console.error(error);
+      } else {
+        this.cartService.clearCart();
+        this.resetCartState();
+        this.changeDetector.detectChanges();
+    }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
+    }
+
+    resetCartState() {
+      this.cartItems = [];
+      this.totalPrice = 0;
+      this.totalQuantity = 0;
+      console.log("Resetting the cart state in the component.");
   }
   
 }

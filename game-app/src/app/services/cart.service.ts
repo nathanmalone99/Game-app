@@ -117,7 +117,14 @@ export class CartService {
       this.cartItems.splice(itemIndex, 1);
 
       this.computeCartTotals();
-    }
+    } 
+  }
+
+  clearCart() {
+    this.cartItems = [];
+    this.totalPrice.next(0);
+    this.totalQuantity.next(0);
+    console.log("Clearing the cart in the service.");
   }
 
 }

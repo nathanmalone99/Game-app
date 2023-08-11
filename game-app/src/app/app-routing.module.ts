@@ -6,12 +6,16 @@ import { CartComponent } from "./components/cart/cart.component";
 import { LoginComponent } from "./components/auth/login/login.component";
 import { SignupComponent } from "./components/auth/signup/signup.component";
 import { AdminDashboardComponent } from "./components/auth/admin-dashboard/admin-dashboard.component";
+import { CancelComponent } from "./components/cancel/cancel.component";
+import { SuccessComponent } from "./components/success/success.component";
 
 
 const routes: Routes = [
     {path: '', component: GamesListComponent},
     {path: 'games/:_id', component: GameDetailsComponent},
     {path: 'cart', component: CartComponent},
+    {path: 'success', component: SuccessComponent},
+    {path: 'cancel', component: CancelComponent},
     {path: 'login', component: LoginComponent},
     {path: 'signup', component: SignupComponent},
     {path: 'admin', component: AdminDashboardComponent},

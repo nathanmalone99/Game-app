@@ -1,12 +1,26 @@
 const express = require('express');
+
+const stripe = require('stripe')('sk_test_51N7gd7IB2R5TmgiioGQN6rwHxBFW4P22XgvmE5X9ilmmulnfMAoXZDUpuXuvEZKCWswMCfo85pL2qLEEsSBt1o0m00wyolSf7M');
+
 const port = 3000;
 const gameRouter = require('./routes/games');
 const userRouter = require('./routes/user');
-const checkoutRouter = require('./routes/checkout');
+const cors = require('cors');
+const path = require('path');
+
+const bodyParser = require('body-parser');
+
 require('./db/mongoose');
 
 
+
+
 const app = express();
+
+
+
+app.use(bodyParser.json());
+app.use(cors());
 
 app.use(express.json());
 
@@ -21,7 +35,54 @@ app.all('/*', (req, res, next) => {
 
 app.use(gameRouter);
 app.use(userRouter);
-app.use(checkoutRouter);
+
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.get('/api/success', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'success.html'));
+});
+
+app.get('/api/cancel', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'cancel.html'));
+});
+
+
+app.post('/api/checkout', async (req, res) => {
+  try {
+
+    const cart = req.body;
+    console.log("Received cart:", cart);
+
+    if (!cart.items || !Array.isArray(cart.items)) {
+      return res.status(400).send('Items not provided or not in correct format');
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: cart.items.map(item => ({
+        price_data: {
+          currency: 'eur',
+          product_data: {
+            name: item.title,
+            
+          },
+          unit_amount: item.price * 100, 
+        },
+        quantity: item.quantity,
+      })),
+      mode: 'payment',
+      success_url: `${'http://localhost:4200'}/success`,
+      cancel_url: `${'http://localhost:4200'}/cancel`,
+    });
+
+    res.json({ sessionId: session.id });
+  } catch (error) {
+    console.error('Error creating Stripe session:', error.message);
+    res.status(500).send('Error creating Stripe session');
+  }
+});
 
 
 
