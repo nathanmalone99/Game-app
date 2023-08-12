@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { RouterModule } from '@angular/router';
+import { AuthInterceptor } from './components/auth/auth-interceptor';
 
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
@@ -27,6 +28,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminDashboardComponent } from './components/auth/admin-dashboard/admin-dashboard.component';
 import { SuccessComponent } from './components/success/success.component';
 import { CancelComponent } from './components/cancel/cancel.component';
+import { AdminGuard } from './components/auth/admin-guard';
+import { AuthGuard } from './components/auth/auth-guard';
+import { AdminGamesListComponent } from './components/auth/admin-games-list/admin-games-list.component';
+import { AdminUsersListComponent } from './components/auth/admin-users-list/admin-users-list.component';
 
 
 @NgModule({
@@ -41,7 +46,9 @@ import { CancelComponent } from './components/cancel/cancel.component';
     LoginComponent,
     AdminDashboardComponent,
     SuccessComponent,
-    CancelComponent
+    CancelComponent,
+    AdminGamesListComponent,
+    AdminUsersListComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +67,10 @@ import { CancelComponent } from './components/cancel/cancel.component';
     AppRoutingModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    AdminGuard,
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,11 +3,15 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { User } from '../common/user';
 import { Router } from '@angular/router';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+
+  private isAdmin = false;
 
   private isAuthenticated = false;
   private token!: string;
@@ -37,6 +41,12 @@ export class UserService {
   createUser(email: string, password: string) {
     const userData: User = {email: email, password: password};
     this._httpClient.post("http://localhost:3000/api/signup", userData)
+    .pipe(
+      catchError(err => {
+        console.error(err);
+        return throwError(err);
+      })
+    )
     .subscribe(response => {
       console.log(response);
     });
@@ -44,7 +54,7 @@ export class UserService {
 
   login(email: string, password: string) {
     const userData: User = {email: email, password: password};
-    this._httpClient.post<{token: string, expiresIn: number}>("http://localhost:3000/api/login", userData)
+    this._httpClient.post<{token: string, expiresIn: number, isAdmin: boolean}>("http://localhost:3000/api/login", userData)
       .subscribe(response => {
         const token = response.token;
         this.token = token;
@@ -57,6 +67,7 @@ export class UserService {
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           console.log(expirationDate);
           this.saveAuthData(token, expirationDate);
+          this.isAdmin = response.isAdmin;
           this.router.navigate(['/']);
         }
       })
@@ -114,4 +125,8 @@ export class UserService {
         expirationDate: new Date(expirationDate)
       }
     }
+
+    isAdminUser() {
+      return this.isAdmin;
+  }
 }

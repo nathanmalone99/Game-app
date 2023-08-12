@@ -2,9 +2,13 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+
+
 const userSchema = require("../models/users");
 
 const router = express.Router();
+
+const checkAuth = require('../middleware/check-auth')
 
 router.get('/api/users', async (req, res) => {
   try {
@@ -21,7 +25,8 @@ router.post("/api/signup", (req, res, next) => {
   .then(hash => {
     const user = new userSchema({
       email: req.body.email,
-      password: hash
+      password: hash,
+      isAdmin: req.body.isAdmin || false
     });
     user.save()
       .then(result => {
@@ -63,7 +68,8 @@ router.post("/api/login", (req, res, next) => {
     );
     res.status(200).json({
       token: token,
-      expiresIn: 3600
+      expiresIn: 3600,
+      isAdmin: fetchedUser.isAdmin
     });
   })
   .catch(err => {
@@ -73,7 +79,7 @@ router.post("/api/login", (req, res, next) => {
   });
 });
 
-router.delete("/api/users/delete/:id", (req, res, next) => {
+router.delete("/api/users/delete/:id", checkAuth, checkAuth.checkAdmin,(req, res, next) => {
   userSchema.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
     res.status(200).json({message: 'User Deleted'})

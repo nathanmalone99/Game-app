@@ -75,6 +75,10 @@ app.post('/api/checkout', async (req, res) => {
       mode: 'payment',
       success_url: `${'http://localhost:4200'}/success`,
       cancel_url: `${'http://localhost:4200'}/cancel`,
+
+     // shipping_address_collection: {
+        //allowed_countries: ['IE', 'UK'],  
+    //},
     });
 
     res.json({ sessionId: session.id });

@@ -2,21 +2,25 @@
     <div class="section-content section-content-p30">
         <div class="container-fluid">
             <div class="row">
-               
+                <div *ngFor="let user of users" class="col-md-3">
 
                     <div class="product-box">
                      
                         
-                            
-                            <button routerLink="/admin-games" class="btn btn-dark btn-sm">Click here to edit games</button>
-                            <button routerLink="/admin-users" class="btn btn-dark btn-sm">Click here to edit users</button>
+                        <h2>{{user.email}}</h2>
+                        <button routerLink="/admin-games" class="btn btn-dark btn-sm">Click here to edit games</button>
+                        <button routerLink="/admin-users" class="btn btn-dark btn-sm">Click here to edit users</button>
 
                             
                         
                     </div>
                     
-                
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+

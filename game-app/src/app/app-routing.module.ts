@@ -8,6 +8,10 @@ import { SignupComponent } from "./components/auth/signup/signup.component";
 import { AdminDashboardComponent } from "./components/auth/admin-dashboard/admin-dashboard.component";
 import { CancelComponent } from "./components/cancel/cancel.component";
 import { SuccessComponent } from "./components/success/success.component";
+import { AdminGuard } from "./components/auth/admin-guard";
+import { AuthGuard } from "./components/auth/auth-guard";
+import { AdminUsersListComponent } from "./components/auth/admin-users-list/admin-users-list.component";
+import { AdminGamesListComponent } from "./components/auth/admin-games-list/admin-games-list.component";
 
 
 const routes: Routes = [
@@ -18,7 +22,9 @@ const routes: Routes = [
     {path: 'cancel', component: CancelComponent},
     {path: 'login', component: LoginComponent},
     {path: 'signup', component: SignupComponent},
-    {path: 'admin', component: AdminDashboardComponent},
+    {path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard] },
+    {path: 'admin-games', component: AdminGamesListComponent, canActivate: [AuthGuard] },
+    {path: 'admin-users', component: AdminUsersListComponent, canActivate: [AuthGuard] }
     
 ];
 
