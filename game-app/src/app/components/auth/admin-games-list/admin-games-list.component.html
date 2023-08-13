@@ -1,1 +1,31 @@
-<p>admin-games-list works!</p>
+<app-games-list></app-games-list>
+
+<div>
+
+<mat-card>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form (submit)="onSaveGame(postForm)" #postForm="ngForm" *ngIf="!isLoading">
+      <mat-form-field>
+        <input matInput type="text" name="title" [ngModel]="game?.title" required placeholder="Game Title" #title=ngModel>
+        <mat-error *ngIf="title.invalid">Please Enter a game title</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput rows="4" name="description" [ngModel]="game?.description" required placeholder="Game Description" #content="ngModel"></textarea>
+        <mat-error *ngIf="content.invalid">Please Enter a game content</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput rows="4" name="pgRating" [ngModel]="game?.pgRating" required placeholder="PG Rating" #content="ngModel"></textarea>
+        <mat-error *ngIf="content.invalid">Please Enter a game content</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput rows="4" name="price" [ngModel]="game?.price" required placeholder="Price" #content="ngModel"></textarea>
+        <mat-error *ngIf="content.invalid">Please Enter a game content</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput rows="4" name="imageUrl" [ngModel]="game?.imageUrl" required placeholder="Image URL" #content="ngModel"></textarea>
+        <mat-error *ngIf="content.invalid">Please Enter a game content</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="accent" type="submit">Save game</button>
+    </form>
+  </mat-card>
+</div>
