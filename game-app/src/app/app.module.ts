@@ -32,6 +32,8 @@ import { AdminGuard } from './components/auth/admin-guard';
 import { AuthGuard } from './components/auth/auth-guard';
 import { AdminGamesListComponent } from './components/auth/admin-games-list/admin-games-list.component';
 import { AdminUsersListComponent } from './components/auth/admin-users-list/admin-users-list.component';
+import { CreateGamesComponent } from './components/auth/create-games/create-games.component';
+import { CreateUsersComponent } from './components/auth/create-users/create-users.component';
 
 
 @NgModule({
@@ -48,7 +50,9 @@ import { AdminUsersListComponent } from './components/auth/admin-users-list/admi
     SuccessComponent,
     CancelComponent,
     AdminGamesListComponent,
-    AdminUsersListComponent
+    AdminUsersListComponent,
+    CreateGamesComponent,
+    CreateUsersComponent
   ],
   imports: [
     BrowserModule,
