@@ -1,14 +1,30 @@
-<mat-card>
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
+<div class="card" style="max-width: 400px; margin: 30px auto;">
+  <div class="card-body">
+    <!-- Spinner -->
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Signup Form -->
     <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
-      <mat-form-field>
-        <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
-        <mat-error *ngIf="emailInput.invalid">Please Enter a valid email</mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel" required>
-        <mat-error *ngIf="passwordInput.invalid">Please Enter a valid password</mat-error>
-      </mat-form-field>
-      <button mat-raised-button color="accent" type="submit" *ngIf="!isLoading">Signup</button>
+      <!-- Email Input -->
+      <div class="form-group">
+        <label for="signupEmail">E-Mail</label>
+        <input type="email" class="form-control" id="signupEmail" name="email" ngModel #emailInput="ngModel" placeholder="E-Mail" required email>
+        <small *ngIf="emailInput.invalid" class="form-text text-danger">Please Enter a valid email</small>
+      </div>
+
+      <!-- Password Input -->
+      <div class="form-group">
+        <label for="signupPassword">Password</label>
+        <input type="password" class="form-control" id="signupPassword" name="password" ngModel #passwordInput="ngModel" placeholder="Password" required>
+        <small *ngIf="passwordInput.invalid" class="form-text text-danger">Please Enter a valid password</small>
+      </div>
+
+      <!-- Signup Button -->
+      <button type="submit" class="btn btn-primary btn-dark" *ngIf="!isLoading">Signup</button>
     </form>
-  </mat-card>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.centered-box {
+    background-color: white; 
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.cancel-box {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 20px;
+}
