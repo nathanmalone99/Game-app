@@ -5,11 +5,15 @@
       {{ game.title }}
     </mat-expansion-panel-header>
     <p>{{ game.description }}</p>
+    <p>{{ game.pgRating }}</p>
+    <p>{{ game.price }}</p>
+    <p>{{ game.imageUrl }}</p>
     <mat-action-row *ngIf="userIsAuthenticated">
-      <a mat-button color="primary" [routerLink]="['/edit', game._id]">Edit</a>
+      <a mat-button color="primary" [routerLink]="['/games-edit', game._id]">Edit</a>
       <button mat-button color="warn" (click)="onDelete(game._id)">Delete</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
+<button routerLink="/create-games" class="btn btn-dark btn-sm">Click here to Create games</button>
 <mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)" *ngIf="games.length > 0"></mat-paginator>
 <p class="info-text mat-body-1" *ngIf="games.length <= 0 && !isLoading">No Games Added Yet</p>

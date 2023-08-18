@@ -70,6 +70,6 @@ export class AdminGamesService {
 
   deleteGame(postId: string) {
     return this._httpClient
-      .delete("http://localhost:3000/api/games/delete" + postId);
+      .delete("http://localhost:3000/api/games/delete/" + postId);
   }
 }

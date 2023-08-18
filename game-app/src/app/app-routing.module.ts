@@ -12,6 +12,7 @@ import { AdminGuard } from "./components/auth/admin-guard";
 import { AuthGuard } from "./components/auth/auth-guard";
 import { AdminUsersListComponent } from "./components/auth/admin-users-list/admin-users-list.component";
 import { AdminGamesListComponent } from "./components/auth/admin-games-list/admin-games-list.component";
+import { CreateGamesComponent } from "./components/auth/create-games/create-games.component";
 
 
 const routes: Routes = [
@@ -24,6 +25,8 @@ const routes: Routes = [
     {path: 'signup', component: SignupComponent},
     {path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard] },
     {path: 'admin-games', component: AdminGamesListComponent, canActivate: [AuthGuard] },
+    {path: 'create-games', component: CreateGamesComponent, canActivate: [AuthGuard] },
+    {path: 'games-edit/:postId', component: CreateGamesComponent, canActivate: [AuthGuard] },
     {path: 'admin-users', component: AdminUsersListComponent, canActivate: [AuthGuard] }
     
 ];
