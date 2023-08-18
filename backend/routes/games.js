@@ -1,6 +1,31 @@
 const express = require('express');
+const Game = require('../models/games')
 const gameSchema = require('../models/games');
 const router = express.Router();
+
+router.get('/api/admin/games', (req, res, next) => {
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const postQuery = Game.find();
+  let fetchedGames;
+  if (pageSize && currentPage) {
+    postQuery
+    .skip(pageSize * (currentPage - 1))
+    .limit(pageSize);
+  }
+  postQuery
+  .then(documents => {
+    fetchedGames = documents;
+    return Game.count();
+  })
+  .then(count => {
+    res.status(200).json({
+      message: "Games fetched successfully",
+      games: fetchedGames,
+      maxPosts: count
+    });
+  });
+});
 
 router.get('/api/games', async (req, res) => {
     try {

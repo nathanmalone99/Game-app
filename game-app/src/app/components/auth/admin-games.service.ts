@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject, map } from 'rxjs';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Game } from 'src/app/common/game';
 import { GamesService } from 'src/app/services/games.service';
 
@@ -22,13 +23,16 @@ export class AdminGamesService {
   getGames(gamesPerPage: number, currentPage: number) {
     const queryParams = `?pagesize=${gamesPerPage}&page=${currentPage}`;
     this._httpClient
-      .get<{message: string, games: any, maxPosts: number}>('http://localhost:3000/api/games' + queryParams)
+      .get<{message: string, games: any, maxPosts: number}>('http://localhost:3000/api/admin/games' + queryParams)
       .pipe(map((gameData) => {
-        return { games: gameData.games.map((game: { title: any; description: any; _id: any; }) => {
+        return { games: gameData.games.map(game => {
           return {
+            _id: game._id,
             title: game.title,
             description: game.description,
-            id: game._id
+            pgRating: game.pgRating,
+            price: game.price,
+            imageUrl: game.imageUrl,
           };
         }), maxPosts: gameData.maxPosts};
       }))
@@ -39,7 +43,7 @@ export class AdminGamesService {
       });
   }
 
-  getgameUpdateListener() {
+  getGameUpdateListener() {
     return this.gamesUpdated.asObservable();
   }
 
@@ -56,9 +60,9 @@ export class AdminGamesService {
     });
   }
 
-  updateGame(_id: string,  title: string, description: string, pgRating: string, price: number, imageUrl: string) {
+  updateGame(id: string,  title: string, description: string, pgRating: string, price: number, imageUrl: string) {
     const game: Game = {_id: null, title: title, description: description, pgRating: pgRating, price: price, imageUrl: imageUrl}
-    this._httpClient.put("http://localhost:3000/api/games/edit" + _id, game)
+    this._httpClient.put("http://localhost:3000/api/games/edit" + id, game)
     .subscribe(response => {
       this.router.navigate(["/"]);
     });

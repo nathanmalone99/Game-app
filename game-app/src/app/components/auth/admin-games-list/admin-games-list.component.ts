@@ -5,6 +5,9 @@ import { Game } from 'src/app/common/game';
 import { GamesService } from 'src/app/services/games.service';
 import { AdminGamesService } from '../admin-games.service';
 import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-admin-games-list',
@@ -13,35 +16,53 @@ import { NgForm } from '@angular/forms';
 })
 export class AdminGamesListComponent {
 
-  enteredContent = '';
-  enteredTitle = '';
-  private mode = 'create';
-  private postId: string;
-  game: Game;
+  games: Game[] = [];
   isLoading = false;
+  totalPosts = 0;
+  postsPerPage = 2;
+  currentPage = 1;
+  pageSizeOptions = [1, 2, 5, 10];
 
-  
+  userIsAuthenticated = false;
+  private postsSub: Subscription;
+  private authStatusSub: Subscription;
 
-  
+  constructor(public adminGamesService: AdminGamesService, private userService: UserService) { }
 
-
-  constructor(private _adminGamesService: AdminGamesService,
-    public route: ActivatedRoute) {
-  }
-
-  onSaveGame(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
+  ngOnInit(): void {
     this.isLoading = true;
-    if (this.mode === 'create') {
-      this._adminGamesService.addGame(form.value.title, form.value.description, form.value.pgRating,  form.value.price, form.value.imageUrl);
-    } else {
-      this._adminGamesService.updateGame(this.postId, form.value.title, form.value.description, form.value.pgRating,  form.value.price, form.value.imageUrl)
-    }
-
-    form.resetForm();
+    this.adminGamesService.getGames(this.postsPerPage, this.currentPage);
+    this.postsSub = this.adminGamesService.getGameUpdateListener()
+      .subscribe((gameData: {games: Game[], gameCount: number}) => {
+        this.isLoading = false;
+        this.totalPosts = gameData.gameCount;
+        this.games = gameData.games;
+    });
+    this.userIsAuthenticated = this.userService.getIsAuth();
+    this.authStatusSub = this.userService.getAuthStatusListener().subscribe(isAuthenticated => {
+      this.userIsAuthenticated = isAuthenticated;
+    });
   }
+
+  onChangedPage(pageData: PageEvent) {
+    this.isLoading = true;
+    this.currentPage = pageData.pageIndex + 1;
+    this.postsPerPage = pageData.pageSize;
+    this.adminGamesService.getGames(this.postsPerPage, this.currentPage);
+  }
+
+  onDelete(postId: string) {
+    this.isLoading = true;
+    this.adminGamesService.deleteGame(postId).subscribe(() => {
+      this.adminGamesService.getGames(this.postsPerPage, this.currentPage);
+    });
+  }
+
+  ngOnDestroy() {
+    this.postsSub.unsubscribe();
+    this.authStatusSub.unsubscribe();
+  }
+
 
   
 
