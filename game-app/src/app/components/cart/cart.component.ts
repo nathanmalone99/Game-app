@@ -5,6 +5,7 @@ import { Cart, CartItem } from 'src/app/common/cart-item';
 import { CartService } from 'src/app/services/cart.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class CartComponent {
 
   constructor(private cartService: CartService, 
               private _httpClient: HttpClient,
-              private changeDetector: ChangeDetectorRef
+              private changeDetector: ChangeDetectorRef, 
+              private router: Router
               ) { 
                 this.cart = new Cart();
               }
@@ -81,7 +83,7 @@ export class CartComponent {
         console.error(error);
       } else {
         this.cartService.clearCart();
-        this.resetCartState();
+        this.resetCart();
         this.changeDetector.detectChanges();
     }
     } catch (error) {
@@ -89,11 +91,21 @@ export class CartComponent {
     }
     }
 
-    resetCartState() {
+    /* resetCartState() {
       this.cartItems = [];
       this.totalPrice = 0;
       this.totalQuantity = 0;
       console.log("Resetting the cart state in the component.");
+    } */
+
+    resetCart() {
+    
+      this.cartService.cartItems = [];
+      this.cartService.totalPrice.next(0);
+      this.cartService.totalQuantity.next(0);
+      this.cartService.persistCartItems();
+
+      this.router.navigateByUrl("/");
   }
   
 }
