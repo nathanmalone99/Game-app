@@ -34,6 +34,7 @@ import { AdminGamesListComponent } from './components/auth/admin-games-list/admi
 import { AdminUsersListComponent } from './components/auth/admin-users-list/admin-users-list.component';
 import { CreateGamesComponent } from './components/auth/create-games/create-games.component';
 import { CreateUsersComponent } from './components/auth/create-users/create-users.component';
+import { OrderHistoryComponent } from './components/order-history/order-history.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { CreateUsersComponent } from './components/auth/create-users/create-user
     AdminGamesListComponent,
     AdminUsersListComponent,
     CreateGamesComponent,
-    CreateUsersComponent
+    CreateUsersComponent,
+    OrderHistoryComponent
   ],
   imports: [
     BrowserModule,

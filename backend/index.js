@@ -5,6 +5,7 @@ const stripe = require('stripe')('sk_test_51N7gd7IB2R5TmgiioGQN6rwHxBFW4P22XgvmE
 const port = 3000;
 const gameRouter = require('./routes/games');
 const userRouter = require('./routes/user');
+const orderRouter = require('./routes/order');
 const cors = require('cors');
 const path = require('path');
 
@@ -12,9 +13,6 @@ const bodyParser = require('body-parser');
 const { db } = require('./models/users');
 
 require('./db/mongoose');
-
-
-
 
 const app = express();
 
@@ -36,6 +34,7 @@ app.all('/*', (req, res, next) => {
 
 app.use(gameRouter);
 app.use(userRouter);
+app.use(orderRouter);
 
 
 app.use(express.static(path.join(__dirname, 'public')));
