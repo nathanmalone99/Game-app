@@ -9,6 +9,7 @@ const cors = require('cors');
 const path = require('path');
 
 const bodyParser = require('body-parser');
+const { db } = require('./models/users');
 
 require('./db/mongoose');
 
@@ -53,7 +54,7 @@ app.post('/api/checkout', async (req, res) => {
   try {
 
     const cart = req.body;
-    console.log("Received cart:", cart);
+    
 
     if (!cart.items || !Array.isArray(cart.items)) {
       return res.status(400).send('Items not provided or not in correct format');
@@ -93,7 +94,7 @@ app.post('/api/checkout', async (req, res) => {
                     currency: 'eur',
                 },
                 display_name: 'Next day air',
-                // Delivers in exactly 1 business day
+                
                 delivery_estimate: {
                     minimum: {
                     unit: 'business_day',
@@ -119,18 +120,45 @@ app.post('/api/checkout', async (req, res) => {
         quantity: item.quantity,
       })),
       mode: 'payment',
-      success_url: `${'http://localhost:4200'}/success`,
+      success_url: `${'http://localhost:3000'}/api/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${'http://localhost:4200'}/cancel`,
 
-     // shipping_address_collection: {
-        //allowed_countries: ['IE', 'UK'],  
-    //},
+    
     });
+    console.log("Created session:", session);
 
     res.json({ sessionId: session.id });
   } catch (error) {
     console.error('Error creating Stripe session:', error.message);
     res.status(500).send('Error creating Stripe session');
+  }
+});
+
+app.get('/api/payment-success', async (req, res,) => {
+  try {
+    const sessionId = req.query.session_id;
+    
+    if (sessionId) {
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      console.log("Retrieved session:", session);
+
+    
+      const customerDetails = session.customer_details;
+
+      if (session.payment_status === 'paid') {
+        const order = {
+          orderId: sessionId,
+          customer: customerDetails,
+          total: session.amount_total / 100,
+          currency: session.currency,
+        };
+        await db.collection('orders').insertOne(order);
+      }
+    }
+    res.redirect('http://localhost:4200/success');
+  } catch (error) {
+    console.error("Error in /api/payment-success:", error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
