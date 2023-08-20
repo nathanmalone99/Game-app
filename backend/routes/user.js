@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const User = require('../models/users')
 
 
 const userSchema = require("../models/users");
@@ -10,15 +10,42 @@ const router = express.Router();
 
 const checkAuth = require('../middleware/check-auth')
 
-router.get('/api/users', async (req, res) => {
-  try {
-      const user = await userSchema.find({});
-      res.status(200).send(user);
+router.get('/api/admin/users', (req, res, next) => {
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const postQuery = User.find();
+  let fetchedUsers;
+  if (pageSize && currentPage) {
+    postQuery
+    .skip(pageSize * (currentPage - 1))
+    .limit(pageSize);
   }
-  catch(error) {
-      res.status(500).send(error);
-  }
+  postQuery
+  .then(documents => {
+    fetchedUsers = documents;
+    return User.count();
+  })
+  .then(count => {
+    res.status(200).json({
+      message: "Users fetched successfully",
+      users: fetchedUsers,
+      maxPosts: count
+    });
+  });
 });
+
+
+router.get('/api/admin/users/:id', (req, res, next) => {
+  userSchema.findById(req.params.id).then(user => {
+      if(user) {
+          res.status(200).json(user);
+      } 
+      else {
+          res.status(404).json({message: 'User not found'});
+      }
+  });
+});
+
 
 router.post("/api/signup", (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
@@ -79,7 +106,34 @@ router.post("/api/login", (req, res, next) => {
   });
 });
 
-router.delete("/api/users/delete/:id", checkAuth, checkAuth.checkAdmin,(req, res, next) => {
+router.post("/api/admin/users/post", (req, res, next) => {
+  const user = new userSchema({
+    email: req.body.email,
+    password: req.body.password,
+    isAdmin: req.body.isAdmin,
+  });
+  user.save().then(createdPost => {
+    res.status(201).json({
+      message: 'Post Added successfully',
+      postId: createdPost._id
+    });
+  });
+});
+
+router.put("/api/admin/users/edit/:id", (req, res, next) => {
+  const user = new userSchema({
+    _id: req.body.id,
+    email: req.body.email,
+    password: req.body.password,
+    isAdmin: req.body.isAdmin,
+  })
+  userSchema.updateOne({_id: req.params.id}, user).then(result => {
+      console.log(result);
+    res.status(200).json({message: 'Update Successful'});
+  });
+});
+
+router.delete("/api/admin/users/delete/:id",(req, res, next) => {
   userSchema.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
     res.status(200).json({message: 'User Deleted'})

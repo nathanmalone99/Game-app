@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { User } from 'src/app/common/user';
 import { UserService } from 'src/app/services/user.service';
+import { AdminUsersService } from '../admin-users.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-admin-users-list',
@@ -11,34 +14,51 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class AdminUsersListComponent {
 
-  public users: any = [];
+  users: User[] = [];
+  isLoading = false;
+  totalPosts = 0;
+  postsPerPage = 2;
+  currentPage = 1;
+  pageSizeOptions = [1, 2, 5, 10];
 
-  constructor(private userService: UserService,
-              private router: Router,
-              private _httpClient: HttpClient) {}
+  userIsAuthenticated = false;
+  private postsSub: Subscription;
+  private authStatusSub: Subscription;
 
+  constructor(public adminUsersService: AdminUsersService, private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe(users => {
-    this.users = users;
-    })
-  }
-
-  addUser(email: string, password: string) {
-    const postUser: User = { email: email, password: password}
-    this._httpClient.post<{message: string, postId: string}>('http://localhost:3000/api/signup', postUser)
-    .subscribe((responseData) => {
-      this.router.navigate(["/"]);
+    this.isLoading = true;
+    this.adminUsersService.getUsers(this.postsPerPage, this.currentPage);
+    this.postsSub = this.adminUsersService.getUserUpdateListener()
+      .subscribe((userData: {users: User[], userCount: number}) => {
+        this.isLoading = false;
+        this.totalPosts = userData.userCount;
+        this.users = userData.users;
+    });
+    this.userIsAuthenticated = this.userService.getIsAuth();
+    this.authStatusSub = this.userService.getAuthStatusListener().subscribe(isAuthenticated => {
+      this.userIsAuthenticated = isAuthenticated;
     });
   }
 
+  onChangedPage(pageData: PageEvent) {
+    this.isLoading = true;
+    this.currentPage = pageData.pageIndex + 1;
+    this.postsPerPage = pageData.pageSize;
+    this.adminUsersService.getUsers(this.postsPerPage, this.currentPage);
+  }
 
-  /* updateUser(email: string, password: string) {
-    const putUser: User = { email: email, password: password}
-    this._httpClient.put("http://localhost:3000/api/" + id, post)
-    .subscribe(response => {
-      this.router.navigate(["/"]);
+  onDelete(postId: string) {
+    this.isLoading = true;
+    this.adminUsersService.deleteUser(postId).subscribe(() => {
+      this.adminUsersService.getUsers(this.postsPerPage, this.currentPage);
     });
-  } */
+  }
+
+  ngOnDestroy() {
+    this.postsSub.unsubscribe();
+    this.authStatusSub.unsubscribe();
+  }
 
 }

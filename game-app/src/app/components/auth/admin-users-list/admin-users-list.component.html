@@ -1,25 +1,19 @@
-<div class="main content">
-    <div class="section-content section-content-p30">
-        <div class="container-fluid">
-            <div class="row">
-                <div *ngFor="let user of users" class="col-md-3">
-
-                    <div class="product-box">
-                     
-                        
-                        <h2>{{user.email}}</h2>
-                        <button routerLink="/admin-games" class="btn btn-dark btn-sm">Click here to edit games</button>
-                        <button routerLink="/admin-users" class="btn btn-dark btn-sm">Click here to edit users</button>
-
-                            
-                        
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion multi="true" *ngIf="users.length > 0 && !isLoading">
+  <mat-expansion-panel *ngFor="let user of users">
+    <mat-expansion-panel-header>
+      {{ user.email }}
+    </mat-expansion-panel-header>
+    <p>{{ user.password }}</p>
+    <mat-action-row *ngIf="userIsAuthenticated">
+      <a mat-button color="primary" [routerLink]="['/users-edit', user._id]">Edit</a>
+      <button mat-button color="warn" (click)="onDelete(user._id)">Delete</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<button routerLink="/create-users" class="btn btn-dark btn-sm">Click here to Create users</button>
+<mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)" *ngIf="users.length > 0"></mat-paginator>
+<p class="info-text mat-body-1" *ngIf="users.length <= 0 && !isLoading">No User Added Yet</p>
 
 
 

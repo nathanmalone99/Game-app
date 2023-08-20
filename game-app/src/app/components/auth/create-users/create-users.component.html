@@ -1,1 +1,16 @@
-<p>create-users works!</p>
+<div>
+    <mat-card>
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
+        <form (submit)="onSaveUser(postForm)" #postForm="ngForm" *ngIf="!isLoading">
+          <mat-form-field>
+            <input matInput type="text" name="title" [ngModel]="user?.email" required placeholder="User Email" #title=ngModel>
+          </mat-form-field>
+          <mat-form-field>
+            <textarea matInput rows="4" name="description" [ngModel]="user?.password" required placeholder="User Password" #content="ngModel"></textarea>
+          </mat-form-field>
+          <button mat-raised-button color="accent" type="submit">Save user</button>
+        </form>
+    </mat-card>
+</div>
+    
+    

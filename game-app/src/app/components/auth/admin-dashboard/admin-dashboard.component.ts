@@ -9,16 +9,12 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class AdminDashboardComponent {
 
-  public users: any = [];
+  
 
   constructor(private userService: UserService,
                private router: Router) {
 }
 
-ngOnInit(): void {
-  this.userService.getUsers().subscribe(users => {
-    this.users = users;
-  })
-}
+
 
 }
