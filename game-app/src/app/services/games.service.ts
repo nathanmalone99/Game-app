@@ -18,7 +18,7 @@ export class GamesService {
   }
 
    getGameById(id: string): Observable<Game> {
-    return this._httpClient.get<Game>(this.baseUrl + 'games/' + id);
+    return this._httpClient.get<Game>(this.baseUrl + id);
   } 
 
 }
