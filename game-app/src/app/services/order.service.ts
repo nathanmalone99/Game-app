@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Order } from '../common/order';
+import { OrderHistory } from '../common/order-history';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,6 @@ export class OrderService {
   constructor(private _httpClient: HttpClient) { }
 
   getOrders() {
-    return this._httpClient.get(this.baseUrl);
+    return this._httpClient.get<OrderHistory[]>(this.baseUrl);
   }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { OrderHistory } from 'src/app/common/order-history';
 import { OrderService } from 'src/app/services/order.service';
 
 @Component({
@@ -9,13 +10,13 @@ import { OrderService } from 'src/app/services/order.service';
 })
 export class OrderHistoryComponent {
 
-  public orders: any = [];
+  orders: OrderHistory[] = [];
 
-  constructor (private router: Router, 
+  constructor (
                private orderService: OrderService ) {}
 
   ngOnInit(): void {
-    this.orderService.getOrders().subscribe(orders => {
+    this.orderService.getOrders().subscribe( orders => {
       this.orders = orders;
     })
   }
