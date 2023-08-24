@@ -13,6 +13,8 @@ export class UserService {
 
   private isAdmin = false;
 
+  
+  private userId: string;
   private isAuthenticated = false;
   private token!: string;
   private tokenTimer: any;
@@ -38,6 +40,14 @@ export class UserService {
     return this.authStatusListener.asObservable();
   }
 
+  setUserId(userId: string): void {
+    localStorage.setItem('userId', userId);
+  }
+
+  getUserId(): string {
+    return localStorage.getItem('userId');
+  }
+
   createUser(email: string, password: string) {
     const userData: User = {email: email, password: password};
     this._httpClient.post("http://localhost:3000/api/signup", userData)
@@ -52,13 +62,32 @@ export class UserService {
     });
   }
 
+  
+
+  getUserEmail(): string | null {
+    return localStorage.getItem('userEmail');
+  } 
+
   login(email: string, password: string) {
     const userData: User = {email: email, password: password};
-    this._httpClient.post<{token: string, expiresIn: number, isAdmin: boolean}>("http://localhost:3000/api/login", userData)
+    this._httpClient.post<{token: string, expiresIn: number, userId: string, isAdmin: boolean, email: string}>("http://localhost:3000/api/login", userData)
+    .pipe(
+      catchError(err => {
+         console.error("Error during login:", err);
+         return throwError(err);
+        })
+      )
       .subscribe(response => {
+        console.log("Full login response:", response);
         const token = response.token;
         this.token = token;
         if (token) {
+
+          this.userId = response.userId; 
+          
+          localStorage.setItem('userEmail', response.email);
+          console.log("Email from API response:", response.email);
+
           const expiresInDuration = response.expiresIn;
           this.setAuthTimer(expiresInDuration);
           this.isAuthenticated = true;
@@ -67,6 +96,7 @@ export class UserService {
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           console.log(expirationDate);
           this.saveAuthData(token, expirationDate);
+          
           this.isAdmin = response.isAdmin;
           this.router.navigate(['/']);
         }
@@ -112,6 +142,7 @@ export class UserService {
     private clearAuthData() { 
       localStorage.removeItem("token");
       localStorage.removeItem("expiration");
+      localStorage.removeItem("userEmail");
     }
 
     private getAuthData() {
@@ -125,6 +156,8 @@ export class UserService {
         expirationDate: new Date(expirationDate)
       }
     }
+
+   
 
     isAdminUser() {
       return this.isAdmin;

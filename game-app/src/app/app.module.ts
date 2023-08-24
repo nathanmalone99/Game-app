@@ -36,7 +36,6 @@ import { CreateGamesComponent } from './components/auth/create-games/create-game
 import { CreateUsersComponent } from './components/auth/create-users/create-users.component';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,6 +73,7 @@ import { OrderHistoryComponent } from './components/order-history/order-history.
     BrowserAnimationsModule
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AdminGuard,
     AuthGuard
   ],

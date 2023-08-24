@@ -96,7 +96,8 @@ router.post("/api/login", (req, res, next) => {
     res.status(200).json({
       token: token,
       expiresIn: 3600,
-      isAdmin: fetchedUser.isAdmin
+      isAdmin: fetchedUser.isAdmin,
+      email: fetchedUser.email
     });
   })
   .catch(err => {

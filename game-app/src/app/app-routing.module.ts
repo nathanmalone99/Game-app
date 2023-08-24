@@ -32,7 +32,7 @@ const routes: Routes = [
     {path: 'create-users', component: CreateUsersComponent, canActivate: [AuthGuard] },
     {path: 'users-edit/:postId', component: CreateUsersComponent, canActivate: [AuthGuard] },
     {path: 'admin-users', component: AdminUsersListComponent, canActivate: [AuthGuard] },
-    {path: 'order-history', component: OrderHistoryComponent},
+    {path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
