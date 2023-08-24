@@ -1,0 +1,9 @@
+.center-content {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.centered-content {
+    text-align: center;
+    vertical-align: middle;
+}
