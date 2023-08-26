@@ -48,6 +48,12 @@ router.get('/api/games/:id', (req, res, next) => {
     });
 });
 
+router.get('/api/search', async (req, res) => {
+  const searchTerm = req.query.term;
+  const games = await gameSchema.find({ title: new RegExp(searchTerm, 'i') });
+  res.json(games);
+});
+
 router.post("/api/games/post", (req, res, next) => {
     const game = new gameSchema({
       title: req.body.title,

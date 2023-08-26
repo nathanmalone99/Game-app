@@ -27,8 +27,9 @@ export class GamesListComponent {
   }
 
   selectGame(id: string) {
-    this.router.navigate(['games/', id]).then();
+    this.router.navigate(['/games', id]).then();
   }
+  
   navigateTo(anchor: string) {
     this.router.navigate([''], {fragment: anchor});
   }

@@ -1,0 +1,32 @@
+.detail-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Assuming you want it to take the full viewport height, adjust accordingly */
+}
+
+.container-fluid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* To ensure it takes the full width of its parent */
+}
+
+.img-responsive {
+    display: block;
+    margin: 0 auto;
+}
+
+.detail-box {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: auto;
+    margin: 0 auto; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

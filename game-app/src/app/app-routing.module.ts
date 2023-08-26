@@ -15,11 +15,12 @@ import { AdminGamesListComponent } from "./components/auth/admin-games-list/admi
 import { CreateGamesComponent } from "./components/auth/create-games/create-games.component";
 import { CreateUsersComponent } from "./components/auth/create-users/create-users.component";
 import { OrderHistoryComponent } from "./components/order-history/order-history.component";
+import { gameResolver } from "./game.resolver"; 
 
 
 const routes: Routes = [
     {path: '', component: GamesListComponent},
-    {path: 'games/:_id', component: GameDetailsComponent},
+    {path: 'games/:_id', component: GameDetailsComponent, resolve: { game: gameResolver } },
     {path: 'cart', component: CartComponent},
     {path: 'success', component: SuccessComponent},
     {path: 'cancel', component: CancelComponent},

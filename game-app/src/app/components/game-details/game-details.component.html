@@ -1,20 +1,19 @@
 <div class="detail-section">
-    <div class="container-fluid">
-        <div *ngIf="game">
+    <div class="container-fluid detail-box">
+        <div *ngIf="game.game">
 
-            <img src="{{ game.imageUrl }}" class="img-responsive">
+            <img src="{{ game.game.imageUrl }}" class="img-responsive">
 
-            <h2>{{game.title}}</h2>
+            <h2>{{game.game.title}}</h2>
 
-            <h2>{{game.description}}</h2>
+            <h5>{{game.game.description}}</h5>
 
-            <h2>{{game.pgRating}}</h2>
+            <h5>{{game.game.pgRating}}</h5>
 
-            <div class="price">{{game.price | currency: 'EUR'}}</div>
+            <div class="price">{{game.game.price | currency: 'EUR'}}</div>
+            <!--<button (click)="addToCart()" class="btn btn-dark btn-sm">Add to cart</button>-->
 
         </div>  
 
     </div>
 </div> 
-
-

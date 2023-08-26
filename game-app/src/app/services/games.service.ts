@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class GamesService {
 
+
   private baseUrl: string = 'http://localhost:3000/api/games';
 
   constructor(private _httpClient: HttpClient) { }
@@ -18,7 +19,6 @@ export class GamesService {
   }
 
    getGameById(id: string): Observable<Game> {
-    return this._httpClient.get<Game>(this.baseUrl + id);
+    return this._httpClient.get<Game>(this.baseUrl + '/' + id);
   } 
-
 }
