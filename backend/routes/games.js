@@ -3,6 +3,12 @@ const Game = require('../models/games')
 const gameSchema = require('../models/games');
 const router = express.Router();
 
+router.get('/api/games/search', async (req, res) => {
+  const searchTerm = req.query.term;
+  const games = await gameSchema.find({ title: new RegExp(searchTerm, 'i') });
+  res.json(games);
+});
+
 router.get('/api/admin/games', (req, res, next) => {
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
@@ -48,11 +54,7 @@ router.get('/api/games/:id', (req, res, next) => {
     });
 });
 
-router.get('/api/search', async (req, res) => {
-  const searchTerm = req.query.term;
-  const games = await gameSchema.find({ title: new RegExp(searchTerm, 'i') });
-  res.json(games);
-});
+
 
 router.post("/api/games/post", (req, res, next) => {
     const game = new gameSchema({

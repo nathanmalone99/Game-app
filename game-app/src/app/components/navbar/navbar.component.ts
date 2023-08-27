@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit, OnDestroy{
 }
 
 searchGames() {
-  this._httpClient.get<any[]>('/api/search', { params: { term: this.searchTerm } })
+  this._httpClient.get<any[]>('http://localhost:3000/api/games/search?term=spiderman', { params: { term: this.searchTerm } })
       .subscribe(
           results => {
               this.games = results; // Update the games list with the search results
