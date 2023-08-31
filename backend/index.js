@@ -14,7 +14,11 @@ const { db } = require('./models/users');
 
 require('./db/mongoose');
 
+
+
 const app = express();
+
+
 
 
 
@@ -22,6 +26,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use(express.json());
+
+
+
+
 
 
 app.all('/*', (req, res, next) => {
@@ -161,8 +169,13 @@ app.get('/api/payment-success', async (req, res,) => {
   }
 });
 
+const DIST_FOLDER = path.join(__dirname, './dist/game-app');
+app.use(express.static(DIST_FOLDER));
 
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(DIST_FOLDER, 'index.html'));
+});
 
 app.listen(port, () => {
   console.log('app is running on port 3000!')
